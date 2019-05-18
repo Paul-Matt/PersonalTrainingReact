@@ -21,8 +21,10 @@ class TrainingList extends Component {
           .catch(err => console.error(err));
       }
 
+
       render() {
-        const columns = [
+        const columnsAll = [{
+          columns: [
           {
             Header: "Id",
             accessor: "id"
@@ -30,10 +32,13 @@ class TrainingList extends Component {
           {
             Header: "Date",
             accessor: "date",
-            filterable: false,
+            filterMethod: (filter, row) => {
+              const id = filter.id
+              return row[id] !== undefined ? String(moment(row[id]).format('D.MM.YYYY, H:mm')).startsWith(filter.value) : true
+            },
 				    Cell: row => {
 				    	return <div>
-						    {moment(row.original.date).format('D MMM YY, H:mm')}
+						    {moment(row.original.date).format('D.MM.YYYY, H:mm')}
               </div>;
             }
           },
@@ -43,8 +48,30 @@ class TrainingList extends Component {
           },
           {
             Header: "Activity",
-            accessor: "activity"
-          } 
+            accessor: "activity",
+            filterMethod: (filter, row) => {
+              const id = filter.id
+              return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase()) : true
+            }
+          }]
+        }, {
+            Header: "Customer",
+            columns: [{
+              Header: "Firstname",
+              accessor: "customer.firstname",
+              filterMethod: (filter, row) => {
+                const id = filter.id
+                return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase()) : true
+              }
+            }, {
+              Header: "Lastname",
+              accessor: "customer.lastname",
+              filterMethod: (filter, row) => {
+                const id = filter.id
+                return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase()) : true
+              }
+            }]
+        }
     ];
 
         return (
@@ -52,7 +79,7 @@ class TrainingList extends Component {
               <ReactTable
                 filterable={true}
                 data={this.state.trainings}
-                columns={columns}
+                columns={columnsAll}
                 defaultPageSize={15}
               />
             </div>
