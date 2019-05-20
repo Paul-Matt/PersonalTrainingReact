@@ -37,6 +37,17 @@ class CustomerList extends Component {
           .catch(err => console.error(err));
       }
 
+      deleteCustomer = (link) => {
+        //alert(link);
+        if (window.confirm("Are you sure?")) {
+            fetch(link, {method: 'DELETE'})
+            .then(res => this.loadCustomers())
+            .then(res => this.setState({open: true, message: 'Customer deleted'}))
+            .catch(err => console.error(err))
+            
+        }
+    };
+
 
       render() {
         const columnsAll = [{
@@ -82,6 +93,15 @@ class CustomerList extends Component {
             }, {
                 Header: "Phone number",
                 accessor: "phone"
+            }, { 
+                Header: "Actions",  
+                accessor:"links[0].href",  
+                filterable: false,
+                sortable: false,
+                width: 100,
+                Cell: ({value}) => <Button variant="danger" size="sm" onClick={() => this.deleteCustomer(value)}>DELETE</Button>
+                    
+                
             }]
         }
     ];
