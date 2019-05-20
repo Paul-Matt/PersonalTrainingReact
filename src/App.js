@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TrainingList from './components/TrainingList';
+import CustomerList from './components/CustomerList';
 import './App.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,11 +13,11 @@ class App extends Component {
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              TrainingList
+              CustomerList
             </Typography>
           </Toolbar>
         </AppBar>
-        <TrainingList />
+        <CustomerList />
       </div>
     );
   }
