@@ -3,11 +3,12 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import AddCustomer from './AddCustomer';
 import Button from 'react-bootstrap/Button';
+import EditCustomer from './EditCustomer';
 
 class CustomerList extends Component {
     constructor(props) {
         super(props);
-        this.state = { trainings: [], open: false, message: '' };
+        this.state = { trainings: [], open: false, message: '', show: false };
       }
     
       componentDidMount() {
@@ -37,6 +38,20 @@ class CustomerList extends Component {
           .catch(err => console.error(err));
       }
 
+      
+      editCustomer = (link, customer) => {
+        fetch(link, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customer)
+            })
+            .then(res => this.loadCustomers())
+            .then(res => this.setState({open: true, message: 'Customer saved'}))
+            .catch(err => console.error(err));
+        }
+
       deleteCustomer = (link) => {
         //alert(link);
         if (window.confirm("Are you sure?")) {
@@ -47,6 +62,7 @@ class CustomerList extends Component {
             
         }
     };
+
 
 
       render() {
@@ -93,16 +109,22 @@ class CustomerList extends Component {
             }, {
                 Header: "Phone number",
                 accessor: "phone"
-            }, { 
-                Header: "Actions",  
-                accessor:"links[0].href",  
-                filterable: false,
-                sortable: false,
-                width: 100,
-                Cell: ({value}) => <Button variant="danger" size="sm" onClick={() => this.deleteCustomer(value)}>DELETE</Button>
-                    
-                
-            }]
+            }, {
+                    Header: "",
+                    accessor:"links[0].href",  
+                    filterable: false,
+                    sortable: false,
+                    width: 90,
+                    Cell: ({row, value}) => (<EditCustomer editCustomer={this.editCustomer} customer={row} link={value} />)
+                }, {
+                    Header: "",
+                    accessor:"links[0].href", 
+                    filterable: false,
+                    sortable: false,
+                    width: 80,
+                    Cell: ({value}) => <Button variant="danger mt-2" size="sm" onClick={() => this.deleteCustomer(value)}>Delete</Button> 
+                }
+            ]
         }
     ];
 
