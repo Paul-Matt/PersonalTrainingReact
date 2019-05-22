@@ -4,8 +4,10 @@ import "react-table/react-table.css";
 import AddCustomer from './AddCustomer';
 import Button from 'react-bootstrap/Button';
 import EditCustomer from './EditCustomer';
+import CustomerTrainings from './CustomerTrainings';
 import { Popconfirm, notification, Icon } from 'antd';
 import 'antd/dist/antd.css';
+
 
 class CustomerList extends Component {
     constructor(props) {
@@ -154,6 +156,15 @@ class CustomerList extends Component {
                             </Popconfirm>
                             </div>
                     }
+                }, {
+                    Header: "",
+                    accessor:"links[2].href", 
+                    filterable: false,
+                    sortable: false,
+                    width: 80,
+                    Cell: ({row, value}) => (<CustomerTrainings customer={row} link={value} />)
+                    //Cell: ({value}) => (<Button color="secondary" size="small" onClick={() => <TrainingsByCustomer link={value} />}>Trainings</Button>)
+                     
                 }
             ]
         }
