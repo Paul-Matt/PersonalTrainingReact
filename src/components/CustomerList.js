@@ -4,11 +4,13 @@ import "react-table/react-table.css";
 import AddCustomer from './AddCustomer';
 import Button from 'react-bootstrap/Button';
 import EditCustomer from './EditCustomer';
+import { Popconfirm, notification, Icon } from 'antd';
+import 'antd/dist/antd.css';
 
 class CustomerList extends Component {
     constructor(props) {
         super(props);
-        this.state = { trainings: [], open: false, message: '', show: false };
+        this.state = { trainings: [], message: '', show: false };
       }
     
       componentDidMount() {
@@ -32,9 +34,15 @@ class CustomerList extends Component {
               },
               body: JSON.stringify(newCustomer)
           })
-          .then(res => this.loadCustomers())
-          // Muokkaa omaan alerttiin sopivaksi?
-          .then(res => this.setState({open: true, message: 'New customer saved'}))
+          .then(res => this.loadCustomers(),
+            notification.open({
+                message: 'Customer added',
+                description:
+                'The new customer details have been added.',
+                duration:2,
+                icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a"  />,
+            })
+          )
           .catch(err => console.error(err));
       }
 
@@ -47,20 +55,30 @@ class CustomerList extends Component {
             },
             body: JSON.stringify(customer)
             })
-            .then(res => this.loadCustomers())
-            .then(res => this.setState({open: true, message: 'Customer saved'}))
+            .then(res => this.loadCustomers(),
+                notification.open({
+                    message: 'Customer updated',
+                    description:
+                    'The customer details have been updated.',
+                    duration:2,
+                    icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a"  />,
+                })
+            )
             .catch(err => console.error(err));
         }
 
       deleteCustomer = (link) => {
-        //alert(link);
-        if (window.confirm("Are you sure?")) {
             fetch(link, {method: 'DELETE'})
-            .then(res => this.loadCustomers())
-            .then(res => this.setState({open: true, message: 'Customer deleted'}))
-            .catch(err => console.error(err))
-            
-        }
+            .then(res => this.loadCustomers(),
+                notification.open({
+                    message: 'Customer deleted',
+                    description:
+                    'The selected customer has been removed.',
+                    duration:2,
+                    icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a"  />,
+                })
+            )
+            .catch(err => console.error(err))       
     };
 
 
@@ -122,7 +140,20 @@ class CustomerList extends Component {
                     filterable: false,
                     sortable: false,
                     width: 80,
-                    Cell: ({value}) => <Button variant="danger mt-2" size="sm" onClick={() => this.deleteCustomer(value)}>Delete</Button> 
+                    Cell: ({value}) => {
+                        return <div>
+					        <Popconfirm
+                                title="Are you sure you want to delete this customer?"
+                                onConfirm={() => this.deleteCustomer(value)}
+                                placement="leftBottom"
+                                okText="Yes"
+                                okType="danger"
+                                cancelText="Cancel"
+                            >
+                             <Button variant="danger mt-2" size="sm" >Delete</Button> 
+                            </Popconfirm>
+                            </div>
+                    }
                 }
             ]
         }
