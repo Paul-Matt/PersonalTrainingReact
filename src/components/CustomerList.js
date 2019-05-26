@@ -159,13 +159,13 @@ class CustomerList extends Component {
                     }
                 }, {
                     Header: "",
-                    accessor:"links[2].href", 
+                    accessor:"links[1].href", 
                     filterable: false,
                     sortable: false,
                     width: 80,
                     Cell: ({row, value}) => {return <Link to={{
                                             pathname: "/trainings",
-                                            state: value
+                                            state: {value, row}
                                         }}>Trainings</Link>
                                        
                     //Cell: ({row, value}) => (<CustomerTrainings customer={row} link={value} />)
