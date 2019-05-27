@@ -73,8 +73,7 @@ class AddTraining extends Component {
                          
                         <Form.Label>Date</Form.Label>
                         <div>
-                        <DateTime open input={false} 
-                                onChange={this.handleDateChange} 
+                        <DateTime onChange={this.handleDateChange} 
                                 closeOnSelect={true}
                                 timeFormat={false}
                                 dateFormat="YYYY-M-D"
@@ -92,7 +91,7 @@ class AddTraining extends Component {
                            <Form.Label>Acivity</Form.Label>
                            <Form.Control name="activity" value={this.state.activity} onChange={this.handleChange}/>
                        </Form.Group>
-                       
+
                        <Button variant="primary mr-2" onClick={this.saveTraining}>
                        Save
                        </Button>
