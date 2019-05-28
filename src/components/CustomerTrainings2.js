@@ -7,15 +7,24 @@ import moment from 'moment';
 import AddTraining from './AddTraining';
 import { Popconfirm, notification, Icon } from 'antd';
 import 'antd/dist/antd.css';
+import Calendar from './Calendar';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { Link, BrowserRouter, Route } from 'react-router-dom';
+
+
 
 class CustomerTrainings extends Component {
     constructor(props) {
         super(props);
         this.state = { trainings: [], open: false, message: '', customerUrl: this.props.location.state.value  };
     }
+    
       
     componentDidMount() {
-        
+      this.setState({
+        customerUrl: this.props.location.state.value
+      })
         this.loadTrainings();
       }
 
@@ -23,7 +32,8 @@ class CustomerTrainings extends Component {
       loadTrainings = () => {
           //alert(`${this.props.location.state.value}/trainings`);
           //alert(this.props.location.state.row.firstname);
-          //alert(this.state.customerUrl);
+          //alert(this.state.customerUrl); 
+          //https://customerrest.herokuapp.com/api/customers/1
         fetch(`${this.props.location.state.value}/trainings`)
           .then(response => response.json())
           .then(jsondata => this.setState({ trainings: jsondata.content }))
@@ -133,7 +143,19 @@ class CustomerTrainings extends Component {
 
         return (
             <div>
+              <Row className="justify-content-md-center">
+                <Col xs lg="2">
                  <AddTraining addTraining={this.addTraining} customer={this.state.customerUrl} />
+                </Col>
+                <Col xs lg="2">
+                  <Link to={{
+                    pathname: "/calendar",
+                    state: {customerUrl:this.state.customerUrl, 
+                            firstname, 
+                            lastname}
+                    }}>Calendar</Link>
+                  </Col>
+              </Row>
                     <ReactTable
                         filterable={true}
                         data={this.state.trainings}
