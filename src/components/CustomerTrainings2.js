@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import moment from 'moment';
 import AddTraining from './AddTraining';
 import { Popconfirm, notification, Icon } from 'antd';
 import 'antd/dist/antd.css';
-import Calendar from './Calendar';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Link, BrowserRouter, Route } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 
 
@@ -148,12 +146,12 @@ class CustomerTrainings extends Component {
                  <AddTraining addTraining={this.addTraining} customer={this.state.customerUrl} />
                 </Col>
                 <Col xs lg="2">
-                  <Link to={{
+                <Button variant="outline-primary mt-2 mb-2" size="sm"><Link to={{
                     pathname: "/calendar",
                     state: {customerUrl:this.state.customerUrl, 
                             firstname, 
                             lastname}
-                    }}>Calendar</Link>
+                    }}>Calendar</Link></Button>
                   </Col>
               </Row>
                     <ReactTable

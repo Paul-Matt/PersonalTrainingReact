@@ -4,10 +4,9 @@ import "react-table/react-table.css";
 import AddCustomer from './AddCustomer';
 import Button from 'react-bootstrap/Button';
 import EditCustomer from './EditCustomer';
-import CustomerTrainings2 from './CustomerTrainings2';
 import { Popconfirm, notification, Icon } from 'antd';
 import 'antd/dist/antd.css';
-import { Link, BrowserRouter, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 class CustomerList extends Component {
@@ -163,10 +162,10 @@ class CustomerList extends Component {
                     filterable: false,
                     sortable: false,
                     width: 80,
-                    Cell: ({row, value}) => {return <Link to={{
+                    Cell: ({row, value}) => {return <Button variant="outline-primary mt-2 mb-2" size="sm"><Link to={{
                                             pathname: "/trainings",
                                             state: {value, row}
-                                        }}>Trainings</Link>
+                                        }}>Trainings</Link></Button>
                                        
                     //Cell: ({row, value}) => (<CustomerTrainings customer={row} link={value} />)
                     //Cell: ({value}) => (<Button color="secondary" size="small" onClick={() => <TrainingsByCustomer link={value} />}>Trainings</Button>)
